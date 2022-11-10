@@ -57,9 +57,10 @@ Downloading data may take some time.
 ### Exploring dataset
 
 
-| ![](assets/eda0.png)  |  ![](assets/eda1.png) |
+| ![](assets/eda0.png)  |  ![](assets/eda7.png) |
 :-------------------------:|:-------------------------:
 | ![](assets/eda3.png)  |  ![](assets/eda4.png) |
+| ![](assets/eda5.png)  |  ![](assets/eda6.png) |
 
 
 
