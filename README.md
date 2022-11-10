@@ -101,7 +101,6 @@ A new config file has been created, `pipeline_new.config`.
 
 ### Training
 
-
 Model and training hyperparameters are defined using a file, pipeline_new.config.
 You can make changes in this config file, then move the `pipeline_new.config` to the `/home/workspace/experiments/reference` folder. Now launch the training process:
 * a training process:
@@ -120,6 +119,12 @@ python experiments/model_main_tf2.py --model_dir=experiments/reference/ --pipeli
 To monitor the training, you can launch a tensorboard instance by running `python -m tensorboard.main --logdir experiments/reference/`. You will report your findings in the writeup.
 
 
+
+
+
+
+
+
 ### Augmentation
 
 Explored the Object Detection API and applied many different augmentations
@@ -128,37 +133,44 @@ Used various augmentation strategies:
 1. random_horizontal_flip
 2. random_crop_image
 3. random_adjust_brightness
-4. random_adjust_contrast
-5. random_adjust_hue
-6. random_adjust_saturation
-7. random_distort_color
+4. random_distort_color
+5. random_adjust_saturation
+6. random_black_patches
 
+The reulting images from the Augementations are as shown below:
 
-| ![](images/augmented1.png)  |  ![](images/augmented3.png) |
+| ![](assets/aug1.png)  |  ![](assets/aug2.png) |
 :-------------------------:|:-------------------------:
-| ![](images/augmented3.png)  |  ![](images/augmented4.png) |
-| ![](images/augmented5.png)  |  ![](images/augmented6.png) |
+| ![](assets/aug3.png)  |  ![](assets/aug4.png) |
 
 
 
-### Experiment
 
-Used SGD with momentum. Rate decay: Cosine anealing. Changed warmup learning rate to 5e-4, warmup steps to 300 and total steps to 5000 to get the desired learning rate function.
+### Experiments
+1. Initially the training performed on with the configuration file with default setting. The results are as shown in the figure below.
+![](assets/def_metrics.jpg)
+![](assets/map_def.jpg)
+![](assets/ar_def.jpg)
+![](assets/lr_def.jpg)
 
-Stopped training at 3k steps just before our model would start overfitting. Although, training loss is still decreasing, but validation loss and mAP have plateaued. So, further training would overfit the dataset.
+  As seen from the figure there no much improvements from the training over time.
+
+2. For the second experiment the hyperparameters: batch size, learning rate, optimizer, and augmentations as defined above are modified.With batch size = 4, optimizer = adam and learning rates: 0.0005 for first 400 steps, 0.0001 for steps  400 - 999, 0.00008 for steps 1000 to 1499, and there after 0.00004. The modification is as shown in the figure below.
+
+  ![Augementations](assets/mod1.jpg)
+  ![optimizer](assets/mod2.jpg)
+
+  ![](assets/mod_metrics.jpg)
+  ![](assets/map_mod.jpg)
+  ![](assets/ar_mod.jpg)
+  ![](assets/lr_mod.jpg)
 
 
-![Loss](images/loss.png)
 
+### Conclusion
+Clearly the experiments reveals that the modification performed as defined above has really helped the object detection model to perform well. The comparison between errors and metrics for both experiments also states the same.
 
-![mAP](images/AP.png)
-
-
-![AR](images/AR.png)
-
-
-<img src="images/learning_rate.png" width=50% height=50%>
-
+Hence it is possible to conclude that selection of batch size, optimizer, augmentations, and learning rates definitely has improved the model performance.
 
 
 ### Creating an animation
@@ -178,10 +190,6 @@ Finally, you can create a video of your model's inferences for any tf record fil
 python inference_video.py --labelmap_path label_map.pbtxt --model_path experiments/reference/exported/saved_model --tf_record_path data/waymo/test/segment-12200383401366682847_2552_140_2572_140_with_camera_labels.tfrecord --config_path experiments/reference/pipeline_new.config --output_path animation.gif
 ```
 
-## Test results
+## Visualisation
 
-![](images/animation1.gif)
-
-![](images/animation2.gif)
-
-![](images/animation3.gif)
+![](assets/animation.gif)
